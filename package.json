@@ -1,0 +1,33 @@
+{
+  "name": "weather",
+  "main": "app.js",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ViennaM/node-test.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.1",
+    "gulp-clean": "^0.4.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-connect": "^5.5.0",
+    "gulp-imagemin": "^4.1.0",
+    "gulp-open": "^3.0.1",
+    "gulp-sass": "^4.0.0",
+    "gulp-sequence": "^1.0.0",
+    "gulp-uglify": "^3.0.0",
+    "compression": "^1.7.2",
+    "express": "^4.16.3",
+    "nunjucks": "^3.1.2",
+    "socket.io": "^2.1.0"
+  },
+  "dependencies": {
+    "express": "^4.15.2",
+    "gulp-nodemon": "^2.2.1",
+    "socket.io": "^2.1.0"
+  }
+}

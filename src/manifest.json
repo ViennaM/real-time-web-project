@@ -1,0 +1,18 @@
+{
+  "name": "Detai",
+  "short_name": "Detai",
+  "description": null,
+  "dir": "auto",
+  "lang": "nl-NL",
+  "display": "standalone",
+  "start_url": "/?homescreen=1",
+  "background_color": "#5E4485",
+  "theme_color": "#463269",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,221 @@
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+body,
+main {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.messages {
+  z-index: 1;
+  div {
+    background: white;
+    padding: 10px 20px;
+    border-radius: 30px;
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    z-index: 0;
+    animation: fly 12s forwards;
+    span {
+      color: #9F9F9F;
+    }
+    @media (max-width:380px) {
+      left: 10px !important;
+      z-index: 1;
+    }
+  }
+}
+
+main {
+  background: #DCE5EA;
+  background-image: url('../images/bg.png');
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: contain;
+  z-index: 2;
+  article {
+    position: absolute;
+    bottom: 13%;
+    left: 50%;
+    transform: translatex(-50%);
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    line-height: 0;
+    text-transform: uppercase;
+    pointer-events: none;
+    .icon {
+      background: #F5F7F9;
+      border: 30px solid white;
+      width: 100px;
+      height: 100px;
+      box-sizing: content-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 100px;
+      margin-bottom: -20px;
+      i.wi {
+        font-size: 40px;
+      }
+    }
+    @media (max-width:380px) {
+      display: none;
+    }
+  
+  h1 {
+    order: 3;
+    font-size: 92px;
+    margin: 40px 0;
+    font-weight: 900;
+  }
+  h2 {
+    order: 1;
+    font-size: 26px;
+    letter-spacing: .35em;
+    margin: 10px 0;
+    font-weight: normal;
+    margin-bottom: 15px;
+  }
+  h3 {
+    order: 2;
+    letter-spacing: .2em;
+    font-weight: normal;
+    color: #9F9F9F;
+    margin-bottom: 30px;
+  }
+  @media (max-width:380px) {
+    opacity: .6;
+  }
+}
+&.warm {
+  background-color: #FCF5DA;
+  article .icon {
+    background: #FEFCF6;
+  }
+}
+}
+
+aside {
+  position: absolute;
+  height: 70px;
+  bottom: 0;
+  background: white;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  z-index: 3;
+  form {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    padding: 0 10px;
+    width: 100%;
+    &#location {
+      width: 20%;
+      min-width: 230px;
+      border-right: 1px solid #E5ECEF;
+      &::before {
+        content: '';
+        display: block;
+        width: 20px;
+        height: 16px;
+        background: url('../images/search.png');
+        background-size: 16px;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+      @media (max-width: 600px) {
+        min-width: 50px;
+        max-width: 50px;
+        input {
+          display: none;
+        }
+      }
+    }
+    label {
+      padding-left: 10px;
+      &.hidden {
+        display: none;
+      }
+    }
+    input {
+      height: 100%;
+      font-size: 16px;
+      border: none;
+      padding: 0 10px;
+      width: 100%;
+      &:focus {
+        outline: none;
+      }
+      &::placeholder {
+        color: #9F9F9F;
+        letter-spacing: .1em;
+      }
+    }
+    button {
+      background: none;
+      border: none;
+      box-shadow: none;
+      font-size: 16px;
+      color: #70C6EB;
+    }
+  }
+  div {
+    height: 100%;
+    min-width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-left: 1px solid #E5ECEF;
+    img {
+      width: 20px;
+      margin-right: -3px;
+      opacity: .5;
+    }
+    p {
+      color: white;
+      background: #70C6EB;
+      width: 24px;
+      height: 24px;
+      line-height: 19px;
+      border-radius: 20px;
+      font-weight: bold;
+      border: 3px solid white;
+      z-index: 1;
+    }
+    @media (max-width: 600px) {
+      min-width: 50px;
+      img {
+        display: none;
+      }
+    }
+  }
+}
+
+@keyframes fly {
+  0% {
+    bottom: 0%;
+    opacity: 0;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    bottom: 110%;
+  }
+}
