@@ -70,6 +70,6 @@ io.on('connection', function (socket) {
 })
 
 
-http.listen(8001, () => {
+http.listen(process.env.PORT ||  8001, () => {
   console.log('Listening.. port 8001')
 })
