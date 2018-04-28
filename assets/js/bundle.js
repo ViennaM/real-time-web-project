@@ -181,6 +181,15 @@ socket.on('userList', function (users) {
       usersWrapper.innerHTML += '<li>' + users[i].username + ' (<a href="' + users[i].location.toLowerCase() + '">' + users[i].location + '</a>)</li>';
     }
   }
+
+  var shortcuts = document.querySelectorAll('section li a');
+  shortcuts.forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      window.history.pushState(a.innerHTML, a.innerHTML, a.innerHTML);
+      getWeather(a.innerHTML);
+      e.preventDefault();
+    });
+  });
 });
 
 function timestamp() {

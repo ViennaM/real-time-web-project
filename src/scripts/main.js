@@ -161,7 +161,6 @@ socket.on('chat', (curMsg) => {
   }
 })
 
-
 window.addEventListener('focus', function () {
   activeTab = true
 })
@@ -169,8 +168,6 @@ window.addEventListener('focus', function () {
 window.addEventListener('blur', function () {
   activeTab = false
 })
-
-
 
 socket.on('userCount', (count) => {
   userWrapper.innerHTML = count
@@ -184,8 +181,16 @@ socket.on('userList', (users) => {
       usersWrapper.innerHTML += `<li>${users[i].username} (<a href="${users[i].location.toLowerCase()}">${users[i].location}</a>)</li>`
     }
   }
-})
 
+  let shortcuts = document.querySelectorAll('section li a')
+  shortcuts.forEach((a) => {
+    a.addEventListener('click', (e) => {
+      window.history.pushState(a.innerHTML, a.innerHTML, a.innerHTML)
+      getWeather(a.innerHTML)
+      e.preventDefault()
+    })
+  })
+})
 
 function timestamp() {
   var d = new Date()
