@@ -10,45 +10,70 @@ var forms = document.querySelectorAll('form'),
     descWrapper = document.querySelector('article h3'),
     iconWrapper = document.querySelector('article i'),
     userWrapper = document.querySelector('aside div p'),
+    userBtn = document.querySelector('aside div'),
+    userList = document.querySelector('#userlist'),
     socket = io();
 var username = void 0,
     position = void 0,
     temperature = document.querySelector('article h1').innerHTML.replace(/\D/g, ''),
     curLat = void 0,
     curLong = void 0,
+    curLoc = void 0,
+    lastIcon = void 0,
     city = void 0,
     activeTab = true;
 var timestamps = [];
 
 iconWrapper.parentElement.classList.add('hidden');
-getLocation();
+userList.classList.add('hidden');
+userBtn.addEventListener('click', function () {
+  userList.classList.toggle('hidden');
+});
+var locationInput = document.querySelector('#location input');
+locationInput.addEventListener('keypress', function (e) {
+  var key = e.which || e.keyCode;
+  if (key === 13) {
+    window.history.pushState(locationInput.value, locationInput.value, locationInput.value);
+    getWeather(locationInput.value);
+    locationInput.value = '';
+  }
+});
 
-function getLocation() {
-  var options = {
-    enableHighAccuracy: false,
-    timeout: 5000,
-    maximumAge: 0
+if (location.pathname.length > 1) {
+  curLoc = location.pathname.substr(1);
+  getWeather(curLoc);
+} else {
+  var getLocation = function getLocation() {
+    var options = {
+      enableHighAccuracy: false,
+      timeout: 5000,
+      maximumAge: 0
+    };
+
+    function success(pos) {
+      var crd = pos.coords;
+      curLat = crd.latitude;
+      curLong = crd.longitude;
+      curLoc = '(' + curLat + ', ' + curLong + ')';
+      getWeather(curLoc);
+    }
+
+    function error(err) {
+      console.warn('ERROR(' + err.code + '): ' + err.message);
+      curLat = 52.3702157;
+      curLong = 4.895167899999933;
+      curLoc = '(' + curLat + ', ' + curLong + ')';
+      getWeather(curLoc);
+    }
+    navigator.geolocation.getCurrentPosition(success, error, options);
   };
 
-  function success(pos) {
-    var crd = pos.coords;
-    curLat = crd.latitude;
-    curLong = crd.longitude;
-    getWeather(curLat, curLong);
-  }
-
-  function error(err) {
-    console.warn('ERROR(' + err.code + '): ' + err.message);
-    curLat = 52.3702157;
-    curLong = 4.895167899999933;
-    getWeather(curLat, curLong);
-  }
-  navigator.geolocation.getCurrentPosition(success, error, options);
+  getLocation();
 }
 
-function getWeather(curLat, curLong) {
+function getWeather(curLoc) {
   var request = new XMLHttpRequest();
-  request.open('GET', 'https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="(' + curLat + ', ' + curLong + ')") and u=\'c\'&format=json', true);
+  request.open('GET', 'https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="' + curLoc + '") and u=\'c\'&format=json', true);
 
   request.onload = function () {
     if (request.status >= 200 && request.status < 400) {
@@ -79,9 +104,13 @@ function render(loc, temp, desc, icon) {
   locWrapper.innerHTML = loc;
   tempWrapper.innerHTML = temp + '\xB0C';
   descWrapper.innerHTML = desc;
+  iconWrapper.classList.remove(lastIcon);
+  lastIcon = 'wi-yahoo-' + icon;
   iconWrapper.classList.add('wi-yahoo-' + icon);
   if (temp > 16) {
     document.querySelector('main').classList.add('warm');
+  } else if (document.querySelector('main').classList.contains('warm')) {
+    document.querySelector('main').classList.remove('warm');
   }
 }
 
@@ -140,8 +169,18 @@ window.addEventListener('blur', function () {
   activeTab = false;
 });
 
-socket.on('userUpdate', function (count) {
+socket.on('userCount', function (count) {
   userWrapper.innerHTML = count;
+});
+
+socket.on('userList', function (users) {
+  var usersWrapper = document.querySelector('section ul');
+  usersWrapper.innerHTML = '';
+  for (var i = 0; i < users.length; i++) {
+    if (users[i].username && users[i].location) {
+      usersWrapper.innerHTML += '<li>' + users[i].username + ' (<a href="' + users[i].location.toLowerCase() + '">' + users[i].location + '</a>)</li>';
+    }
+  }
 });
 
 function timestamp() {
@@ -149,13 +188,3 @@ function timestamp() {
   var n = d.getTime();
   return n;
 }
-
-// function moveUp(element) {
-//   var i=0
-//   function step() {
-//      element.style.bottom=i+"%"
-//      i++
-//      if (i<=120) setTimeout(step,10);
-//   }
-//   step()
-// }
