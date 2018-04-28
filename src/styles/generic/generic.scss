@@ -71,9 +71,6 @@ main {
         font-size: 40px;
       }
     }
-    @media (max-width:380px) {
-      display: none;
-    }
   
   h1 {
     order: 3;
@@ -146,6 +143,9 @@ aside {
           display: none;
         }
       }
+      @media (max-width: 380px) {
+        dislpay: none;
+      }
     }
     label {
       padding-left: 10px;
@@ -205,6 +205,9 @@ aside {
       img {
         display: none;
       }
+    }
+    @media (max-width: 380px) {
+      dislpay: none;
     }
   }
 }

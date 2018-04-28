@@ -87,9 +87,6 @@ main {
       margin-bottom: -20px; }
       main article .icon i.wi {
         font-size: 40px; }
-    @media (max-width: 380px) {
-      main article {
-        display: none; } }
     main article h1 {
       order: 3;
       font-size: 92px;
@@ -152,6 +149,9 @@ aside {
           max-width: 50px; }
           aside form#location input {
             display: none; } }
+      @media (max-width: 380px) {
+        aside form#location {
+          dislpay: none; } }
     aside form label {
       padding-left: 10px; }
       aside form label.hidden {
@@ -201,6 +201,9 @@ aside {
         min-width: 50px; }
         aside div img {
           display: none; } }
+    @media (max-width: 380px) {
+      aside div {
+        dislpay: none; } }
 
 section {
   position: absolute;
