@@ -70,12 +70,12 @@ io.on('connection', function (socket) {
   })
   socket.on('disconnect', function () {
     clients.forEach((client)=> {
+      clients = clients.filter((client) => { // Remove socket.id from clients
+        return client.id !== socket.id
+      })
       if(client.id === socket.id && client.username) {
         userCount--
       }
-    })
-    clients = clients.filter((client) => { // Remove socket.id from clients
-      return client !== socket.id
     })
     io.emit('userCount', userCount)
     io.emit('userList', clients)
