@@ -71,7 +71,6 @@ main {
     justify-content: center;
     align-items: center;
     text-align: center;
-    line-height: 0;
     text-transform: uppercase;
     pointer-events: none; }
     main article .icon {
@@ -84,30 +83,26 @@ main {
       justify-content: center;
       align-items: center;
       border-radius: 100px;
-      margin-bottom: -20px; }
+      margin-bottom: -40px; }
       main article .icon i.wi {
         font-size: 40px; }
     main article h1 {
       order: 3;
       font-size: 92px;
-      margin: 40px 0;
-      font-weight: 900; }
+      font-weight: 900;
+      margin-bottom: -10px; }
     main article h2 {
       order: 1;
       font-size: 26px;
       letter-spacing: .35em;
-      margin: 10px 0;
       font-weight: normal;
-      margin-bottom: 15px; }
+      margin-bottom: -10px; }
     main article h3 {
       order: 2;
       letter-spacing: .2em;
       font-weight: normal;
       color: #9F9F9F;
-      margin-bottom: 30px; }
-    @media (max-width: 380px) {
-      main article {
-        opacity: .6; } }
+      margin-bottom: -60px; }
   main.warm {
     background-color: #FCF5DA; }
     main.warm article .icon {
@@ -151,7 +146,9 @@ aside {
             display: none; } }
       @media (max-width: 380px) {
         aside form#location {
-          dislpay: none; } }
+          min-width: 1px;
+          max-width: 1px;
+          padding: 0; } }
     aside form label {
       padding-left: 10px; }
       aside form label.hidden {
@@ -167,6 +164,9 @@ aside {
       aside form input::placeholder {
         color: #9F9F9F;
         letter-spacing: .1em; }
+      @media (max-width: 380px) {
+        aside form input {
+          font-size: 14px; } }
     aside form button {
       background: none;
       border: none;
@@ -196,6 +196,9 @@ aside {
       font-weight: bold;
       border: 3px solid white;
       z-index: 1; }
+      @media (max-width: 380px) {
+        aside div p {
+          display: none; } }
     @media (max-width: 600px) {
       aside div {
         min-width: 50px; }
@@ -203,18 +206,52 @@ aside {
           display: none; } }
     @media (max-width: 380px) {
       aside div {
-        dislpay: none; } }
+        min-width: 1px;
+        max-width: 1px;
+        padding: 0; } }
 
 section {
   position: absolute;
   bottom: 70px;
-  right: 0;
   padding: 0 20px 30px;
   background: white;
   max-height: 400px;
   overflow-y: scroll;
   box-shadow: 0 0 15px 0 rgba(96, 125, 140, 0.2);
   transition: 2s; }
+  section#userlist {
+    right: 0; }
+  section#suggestions {
+    left: 0;
+    padding: 15px 20px;
+    width: 20%;
+    min-width: 230px; }
+    section#suggestions li a {
+      border-bottom: 1px solid #efefef;
+      display: block;
+      text-decoration: none;
+      padding: 0px 0 18px 30px;
+      position: relative; }
+      section#suggestions li a:hover {
+        color: #1797cc; }
+        section#suggestions li a:hover::before {
+          opacity: 1; }
+      section#suggestions li a::before {
+        content: '';
+        display: block;
+        width: 20px;
+        height: 20px;
+        background: url("https://image.flaticon.com/icons/png/128/149/149060.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        position: absolute;
+        top: -2px;
+        left: 0;
+        opacity: .7; }
+    section#suggestions li:last-of-type a {
+      border-bottom: none;
+      padding-bottom: 0; }
   section h1 {
     position: sticky;
     top: 0px;
@@ -239,6 +276,16 @@ section {
     opacity: 1; }
   100% {
     bottom: 110%; } }
+
+@media (max-width: 380px) {
+  @keyframes fly {
+    0% {
+      bottom: 0%;
+      opacity: 1; }
+    70% {
+      opacity: 1; }
+    100% {
+      bottom: 110%; } } }
 
 /* component styles */
 /*!
