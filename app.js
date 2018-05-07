@@ -37,7 +37,7 @@ io.on('connection', function (socket) {
   socket.on('setName', function (username) {
     clients.forEach((client) => {
       if (client.id === socket.id) {
-        client.username = username.replace(/<\/?[^>]+(>|$)/g, "")
+        client.username = username.replace(/<\/?[^>]+(>|$)/g, '')
       }
     })
     userCount++
