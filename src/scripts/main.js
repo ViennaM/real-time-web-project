@@ -8,6 +8,22 @@
       this.handleEvents()
     },
     handleEvents: function () {
+      const offlineMsg = `
+          <div class="offline" hidden>
+            <p>It seems like you're offline ☹️</p>
+            <p>Trying to reconnect...</p>
+            <img src="https://loading.io/spinners/sunny/lg.solar-light-ajax-spinner.gif" width="40">
+          </div>
+          `
+          document.body.insertAdjacentHTML('beforeend', offlineMsg)
+      setInterval(()=> {
+        if(!navigator.onLine) {
+          document.querySelector('.offline').hidden = false
+        } else {
+          document.querySelector('.offline').hidden = true
+        }
+      }, 2000)
+
       if (location.pathname.length > 1) {
         user.curLoc = location.pathname.substr(1)
         socket.io.emit('setLocation', user.curLoc)
