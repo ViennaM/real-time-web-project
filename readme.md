@@ -79,6 +79,8 @@ The used data doesn't require to be remembered or stored in a database. Everythi
 
 - [ ] Clean up messy code
 
+- [ ] Update live location
+
 ## Sources
 - [https://socket.io/](https://socket.io/)
 - [https://developer.yahoo.com/weather/](https://developer.yahoo.com/weather/)
