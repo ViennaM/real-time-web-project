@@ -95,7 +95,7 @@ io.on('connection', function (socket) {
     })
     clients.forEach((client)=> {
       if (client.location === curMsg.location) {
-        socket.to(socket.id).emit('chat', curMsg)
+        socket.to(client.id).emit('chat', curMsg)
       }
     })
     socket.emit('chat', curMsg)
