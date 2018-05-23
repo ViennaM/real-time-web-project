@@ -15,9 +15,9 @@
             <img src="https://loading.io/spinners/sunny/lg.solar-light-ajax-spinner.gif" width="40">
           </div>
           `
-          document.body.insertAdjacentHTML('beforeend', offlineMsg)
-      setInterval(()=> {
-        if(!navigator.onLine) {
+      document.body.insertAdjacentHTML('beforeend', offlineMsg)
+      setInterval(() => {
+        if (!navigator.onLine) {
           document.querySelector('.offline').hidden = false
         } else {
           document.querySelector('.offline').hidden = true
@@ -47,6 +47,7 @@
           window.history.pushState(app.elements.locationInput.value, app.elements.locationInput.value, app.elements.locationInput.value.replace(/ /g, '-').toLowerCase())
           socket.io.emit('setLocation', app.elements.locationInput.value)
           app.elements.locationInput.value = ''
+          app.elements.suggestionWrapper.parentElement.classList.add('hidden')
         }
       })
 
@@ -151,9 +152,7 @@
 
       function error(err) {
         console.warn(`ERROR(${err.code}): ${err.message}`)
-        user.curLat = 52.3702157
-        user.curLong = 4.895167899999933
-        user.curLoc = `(${user.curLat}, ${user.curLong})`
+        user.curLoc = 'Amsterdam'
         socket.io.emit('setLocation', user.curLoc)
       }
       navigator.geolocation.getCurrentPosition(success, error, options)
@@ -176,7 +175,7 @@
       }
     },
     receive: function (curMsg) {
-      if (curMsg.location === user.city && user.activeTab) {
+      if (user.activeTab) {
         let chat = `<div style="left:${curMsg.position}%"><span>${curMsg.username}: </span>${curMsg.message}</div>`
         app.elements.messages.insertAdjacentHTML('beforeend', chat)
         app.elements.messages.querySelectorAll('div').forEach((chat) => {
@@ -199,10 +198,20 @@
         user.city = weather.city
       })
       this.io.on('crash', (status) => {
-        if (status === 'notfound'){
-          app.renderWeather({city: 'OOPS', temp: '??', desc: 'city not found', icon: '36' } )
+        if (status === 'notfound') {
+          app.renderWeather({
+            city: 'OOPS',
+            temp: '??',
+            desc: 'city not found',
+            icon: '36'
+          })
         } else if (status === 'crash') {
-          app.renderWeather({city: 'OOPS', temp: '??', desc: 'something went wrong', icon: '36' } )
+          app.renderWeather({
+            city: 'OOPS',
+            temp: '??',
+            desc: 'something went wrong',
+            icon: '36'
+          })
         }
       })
       this.io.on('userCount', (count) => {
@@ -249,7 +258,7 @@
   }
 
   const helper = {
-    timestamp: function() {
+    timestamp: function () {
       var d = new Date()
       var n = d.getTime()
       return n
