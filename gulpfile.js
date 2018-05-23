@@ -59,7 +59,7 @@ gulp.task('bundle-p', () => {
 gulp.task('images', () => {
   return gulp
     .src('src/images/**/*')
-    .pipe(imagemin())
+    // .pipe(imagemin())
     .pipe(gulp.dest('assets/images'))
 })
 
