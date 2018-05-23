@@ -7,6 +7,20 @@ Live demo: [here](https://weertj.herokuapp.com/)
 ![Screenshot](images/screenshot.png "Weather app screenshot")
 
 ## Table of Contents
+- [Weather](#weather)
+  * [Setup](#setup)
+  * [Features](#features)
+    + [Current location](#current-location)
+    + [Change location](#change-location)
+    + [User list](#user-list)
+  * [External sources](#external-sources)
+    + [Yahoo Weather API](#yahoo-weather-api)
+    + [GeoNames](#geonames)
+  * [Data life cycle](#data-life-cycle)
+  * [Wishlist](#wishlist)
+  * [Sources](#sources)
+  * [License](#license)
+
 
 ## Setup
 
@@ -41,7 +55,7 @@ When the user sets a username to chat, he'll appear in the user list with his cu
 ## External sources
 
 ### Yahoo Weather API
-The most important external source is Yahoo Weather API. Weather information is collected by calling this end point:
+The most important external source is [Yahoo Weather API](https://developer.yahoo.com/weather/). Weather information is collected by calling this end point:
 ```
 https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="${location}") and u='c'&format=json
 ```
@@ -61,9 +75,9 @@ The used data doesn't require to be remembered or stored in a database. Everythi
 
 
 ## Wishlist
--[ ] Use socket.io rooms
+- [ ] Use socket.io rooms
 
--[ ] Clean up messy code
+- [ ] Clean up messy code
 
 ## Sources
 - [https://socket.io/](https://socket.io/)
