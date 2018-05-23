@@ -182,6 +182,13 @@
         app.renderWeather(weather)
         user.city = weather.city
       })
+      this.io.on('crash', (status) => {
+        if (status === 'notfound'){
+          app.renderWeather({city: 'OOPS', temp: '??', desc: 'city not found', icon: '36' } )
+        } else if (status === 'crash') {
+          app.renderWeather({city: 'OOPS', temp: '??', desc: 'something went wrong', icon: '36' } )
+        }
+      })
       this.io.on('userCount', (count) => {
         app.elements.userWrapper.innerHTML = count
       })

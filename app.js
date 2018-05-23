@@ -26,45 +26,13 @@ let clients = []
 let userCount = 0
 
 const api = {
-  init: function () {
-
-  },
-  getWeather: function (location) {
-    // get weather info from yahoo api
-    
-    
-
-    // return new Promise((resolve, reject) => {
-    //   const request = new XMLHttpRequest();
-    //   request.open('GET', `https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="${location}") and u='c'&format=json`, true)
-    //   request.onload = () => resolve(request.responseText)
-    //   request.onerror = () => reject(request.statusText)
-    //   request.send()
-    // })
-
-    // request.onload = function () {
-    //   if (request.status >= 200 && request.status < 400) {
-    //     // Success!
-    //     this.handleData(JSON.parse(request.responseText.query.results.channel))
-
-    //   } else {
-    //     render('Oops :(', '??', 'Try again later', '36')
-    //   }
-    // }
-    // request.onerror = function () {
-    // There was a connection error of some sort
-    // render('Oops :(', '??', 'Try again later', '36')
-    // }
-
-  },
-  handleData: function (data) {    
+  handleData: function (data) {
     // return readable format
-    let parsed = JSON.parse(data).query.results.channel
     const weather = {
-      city: parsed.location.city,
-      temp: parsed.item.condition.temp,
-      desc: parsed.item.condition.text,
-      icon: parsed.item.condition.code
+      city: data.channel.location.city,
+      temp: data.channel.item.condition.temp,
+      desc: data.channel.item.condition.text,
+      icon: data.channel.item.condition.code
     }
     return weather
   }
@@ -90,31 +58,43 @@ io.on('connection', function (socket) {
   })
   socket.on('setLocation', function (location) {
     request(`https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="${location}") and u='c'&format=json`, function (error, response, body) {
-      let weather = api.handleData(body)
-      socket.emit('weather', weather)
-      clients.forEach((client) => {
-        if (client.id === socket.id) {
-          client.location = weather.city
-          io.emit('userList', clients)
+      if (response.statusCode >= 200 && response.statusCode < 400) {
+        let parsed = JSON.parse(body).query.results
+        console.log(parsed.channel.location)
+        if (parsed.channel.location) {
+          let weather = api.handleData(parsed)
+          socket.emit('weather', weather)
+          clients.forEach((client) => {
+            if (client.id === socket.id) {
+              client.location = weather.city
+              io.emit('userList', clients)
+            }
+          })
+        } else {
+          console.log('error: city not found')
+          socket.emit('crash', 'notfound')
         }
-      })
+      } else {
+        console.log('error:', error, response.statusCode)
+        socket.emit('crash', 'crash')
+      }
     })
   })
   socket.on('chat', function (msg) {
-      let curMsg = {
-        message: msg.replace(/<\/?[^>]+(>|$)/g, ""),
-        username: '',
-        location: '',
-        position: ''
+    let curMsg = {
+      message: msg.replace(/<\/?[^>]+(>|$)/g, ""),
+      username: '',
+      location: '',
+      position: ''
+    }
+    clients.forEach((client) => {
+      if (client.id === socket.id) {
+        curMsg.username = client.username
+        curMsg.location = client.location
+        curMsg.position = client.position
       }
-      clients.forEach((client) => {
-        if (client.id === socket.id) {
-          curMsg.username = client.username
-          curMsg.location = client.location
-          curMsg.position = client.position
-        }
-      })
-      io.emit('chat', curMsg)
+    })
+    io.emit('chat', curMsg)
   })
   socket.on('disconnect', function () {
     clients.forEach((client) => {
