@@ -60,7 +60,6 @@ io.on('connection', function (socket) {
     request(`https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="${location}") and u='c'&format=json`, function (error, response, body) {
       if (response.statusCode >= 200 && response.statusCode < 400) {
         let parsed = JSON.parse(body).query.results
-        console.log(parsed.channel.location)
         if (parsed.channel.location) {
           let weather = api.handleData(parsed)
           socket.emit('weather', weather)
@@ -94,7 +93,12 @@ io.on('connection', function (socket) {
         curMsg.position = client.position
       }
     })
-    io.emit('chat', curMsg)
+    clients.forEach((client)=> {
+      if (client.location === curMsg.location) {
+        socket.to(socket.id).emit('chat', curMsg)
+      }
+    })
+    socket.emit('chat', curMsg)
   })
   socket.on('disconnect', function () {
     clients.forEach((client) => {
