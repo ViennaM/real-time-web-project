@@ -73,6 +73,18 @@ The used data doesn't require to be remembered or stored in a database. Everythi
 
 ![data](images/cycle.png "Data cycle")
 
+## User feedback
+
+### Offline
+When a client is offline, an error message will be shown. As soon as the clients goes online again, the message will dissappear.
+
+![Offline](images/offline.png "Offline message")
+
+### API error
+If the city the user submitted can't be found, an error message will appear.
+
+![Not found](images/notfound.png "City not found")
+
 
 ## Wishlist
 - [ ] Use socket.io rooms

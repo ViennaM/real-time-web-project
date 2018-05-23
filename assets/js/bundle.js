@@ -10,6 +10,16 @@
       this.handleEvents();
     },
     handleEvents: function handleEvents() {
+      var offlineMsg = '\n          <div class="offline" hidden>\n            <p>It seems like you\'re offline \u2639\uFE0F</p>\n            <p>Trying to reconnect...</p>\n            <img src="https://loading.io/spinners/sunny/lg.solar-light-ajax-spinner.gif" width="40">\n          </div>\n          ';
+      document.body.insertAdjacentHTML('beforeend', offlineMsg);
+      setInterval(function () {
+        if (!navigator.onLine) {
+          document.querySelector('.offline').hidden = false;
+        } else {
+          document.querySelector('.offline').hidden = true;
+        }
+      }, 2000);
+
       if (location.pathname.length > 1) {
         user.curLoc = location.pathname.substr(1);
         socket.io.emit('setLocation', user.curLoc);
@@ -33,6 +43,7 @@
           window.history.pushState(app.elements.locationInput.value, app.elements.locationInput.value, app.elements.locationInput.value.replace(/ /g, '-').toLowerCase());
           socket.io.emit('setLocation', app.elements.locationInput.value);
           app.elements.locationInput.value = '';
+          app.elements.suggestionWrapper.parentElement.classList.add('hidden');
         }
       });
 
@@ -137,9 +148,7 @@
 
       function error(err) {
         console.warn('ERROR(' + err.code + '): ' + err.message);
-        user.curLat = 52.3702157;
-        user.curLong = 4.895167899999933;
-        user.curLoc = '(' + user.curLat + ', ' + user.curLong + ')';
+        user.curLoc = 'Amsterdam';
         socket.io.emit('setLocation', user.curLoc);
       }
       navigator.geolocation.getCurrentPosition(success, error, options);
@@ -162,7 +171,7 @@
       }
     },
     receive: function receive(curMsg) {
-      if (curMsg.location === user.city && user.activeTab) {
+      if (user.activeTab) {
         var _chat = '<div style="left:' + curMsg.position + '%"><span>' + curMsg.username + ': </span>' + curMsg.message + '</div>';
         app.elements.messages.insertAdjacentHTML('beforeend', _chat);
         app.elements.messages.querySelectorAll('div').forEach(function (chat) {
@@ -183,6 +192,23 @@
       this.io.on('weather', function (weather) {
         app.renderWeather(weather);
         user.city = weather.city;
+      });
+      this.io.on('crash', function (status) {
+        if (status === 'notfound') {
+          app.renderWeather({
+            city: 'OOPS',
+            temp: '??',
+            desc: 'city not found',
+            icon: '36'
+          });
+        } else if (status === 'crash') {
+          app.renderWeather({
+            city: 'OOPS',
+            temp: '??',
+            desc: 'something went wrong',
+            icon: '36'
+          });
+        }
       });
       this.io.on('userCount', function (count) {
         app.elements.userWrapper.innerHTML = count;
