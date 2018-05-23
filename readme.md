@@ -89,7 +89,7 @@ If the city the user submitted can't be found, an error message will appear.
 ## Wishlist
 - [ ] Use socket.io rooms
 
-- [ ] Clean up messy code
+- [ ] Add avatars
 
 - [ ] Update live location
 
